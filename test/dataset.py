@@ -8,13 +8,14 @@
 @Modify      : None
 """
 from __future__ import absolute_import, division, print_function
-
+import tensorflow as tf
 import fairy
 import numpy as np
+mnist = tf.keras.datasets.mnist
 
 a = [i for i in range(10)]  # 列表
 b = np.arange(15).reshape(5, 3)  # numpy数组
-c = {"a": [1, 2, 3], "b": [4, 5, 6]}  # 字典类型
+c = {"a": [1, 2, 3], "b": [11, 12, 13]}  # 字典类型
 d = ([i for i in range(10)], [i for i in range(10, 20)])  # 元组类型
 
 # data1 = fairy.data.dataset(a, shuffle=True)
@@ -24,26 +25,25 @@ d = ([i for i in range(10)], [i for i in range(10, 20)])  # 元组类型
 
 
 def fuc1(x):
-    return x+1
-
+    return x + 1
 
 data1 = fairy.data.Dataset(a).repeat(2).shuffle().map(fuc1).make_iterator()
-# data1 = fairy.data.Dataset(a).repeat(2).shuffle()
-data2 = fairy.data.Dataset(b).repeat().shuffle().make_iterator()
-data3 = fairy.data.Dataset(c).repeat().shuffle().make_iterator()
-data4 = fairy.data.Dataset(d).repeat().shuffle().make_iterator()
 
 
-# for i in range(30):
-#     print(data1.get_next())
 
-for i in data1:
-    print(i)
+
+data1 = fairy.data.Dataset(a).repeat().shuffle()
+data2 = fairy.data.Dataset(b).repeat().shuffle().batch(2).make_iterator()
+data3 = fairy.data.Dataset(c).repeat().shuffle().batch(2).make_iterator()
+data4 = fairy.data.Dataset(d).repeat().shuffle().batch(2).make_iterator()
+
+for i in range(30):
+    print(data1.get_next())
+
 for i in range(20):
     print(next(data2))
 for i in range(10):
-    print(next(data3))
+    tmp = next(data3)
+
 for i in range(30):
     print(next(data4))
-
-

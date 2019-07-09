@@ -8,9 +8,10 @@
 @Modify      : None
 """
 from __future__ import absolute_import, division, print_function
+
 import tensorflow as tf
 
-import keras.backend.tensorflow_backend as KTF
+import tensorflow.keras.backend.tensorflow_backend as KTF
 
 config = tf.ConfigProto()
 config.gpu_options.allow_growth = True

@@ -21,6 +21,8 @@ class Dataset(object):
     Dataset类，可用来对数据集进行处理和迭代
 
     Attributes:
+        data_num: 数据个数，共输入了几种数据（x:1种，(x,y):2种）
+        data_type: 输入数据的类型
         ring: 循环列表类
         counter: 循环计数器，表示已经循环了几次
         batch_list: batch数据缓存区
@@ -35,6 +37,16 @@ class Dataset(object):
                      元组 (x_data, y_data,...)
                      字典 {"x":x_data, "y":y_data,...}
         """
+        if isinstance(data, tuple):
+            self.data_num = len(data)
+        else:
+            self.data_num = 1
+
+        if isinstance(data, dict):
+            self.data_type = "dict"
+        else:
+            self.data_type = None
+
         self.ring = Ring(ft.data_zip(data))
 
         self.counter = self.ring.get_counter()
@@ -88,10 +100,9 @@ class Dataset(object):
             self.epochs = epochs
         return self
 
-    def get_next(self):
+    def _get_mini_batch(self):
         """
-        获取一个 mini batch
-        :return: numpy数组
+        获取一个 mini batch,暂存到self.batch_list
         """
         # 暂存batch_size和counter
         batch_size = self.batch_size
@@ -99,29 +110,72 @@ class Dataset(object):
 
         if self.epochs == self.counter:
             raise StopIteration("Data has been iteratively completed")
+
+        # 清空list
+        self.batch_list.clear()
+        # 最后一次epoch并且剩余不足batch_size时，将batch_size的值设为剩余元素数量
+        if ((self.epochs - self.counter) == 1) and (
+            (self.ring.length - self.ring.index) // self.batch_size == 0):
+            batch_size = (self.ring.length - self.ring.index) % self.batch_size
+
+        for _ in range(batch_size):
+            # 每个epoch混洗一次
+            if (counter != self.counter) and self.shuffle_flag:
+                np.random.shuffle(self.ring.data)
+                counter = self.counter
+
+            data_np = self.ring.next()
+            self.counter = self.ring.get_counter()  # 更新self.counter
+
+            self.batch_list.append(data_np)
+
+    def get_next(self):
+        """
+        获取一个 mini batch
+        :return: numpy数组或形似(x,y)的元组
+        """
+        # 判断输入的数据种类，返回numpy数组或形似(x,y)的元组
+        if self.data_type == "dict":
+            return self._get_next_dict()
+        elif self.data_num == 1:
+            return self._get_next_x()
         else:
-            # 清空list
-            self.batch_list.clear()
-            # 最后一次epoch并且剩余不足batch_size时，将batch_size的值设为剩余元素数量
-            if ((self.epochs - self.counter) == 1) and (
-               (self.ring.length - self.ring.index) // self.batch_size == 0):
-                batch_size = (
-                    self.ring.length - self.ring.index) % self.batch_size
+            return self._get_next_mul()
 
-            for _ in range(batch_size):
-                # 每个epoch混洗一次
-                if (counter != self.counter) and self.shuffle_flag:
-                    np.random.shuffle(self.ring.data)
-                    counter = self.counter
+    def _get_next_x(self):
+        """
+        在输入数据只有x时，获取一个 mini batch
+        :return: numpy数组
+        """
+        self._get_mini_batch()
 
-                image_np = self.ring.next()
-                self.counter = self.ring.get_counter()  # 更新self.counter
-                image_np = np.array(image_np)
+        return np.array(self.batch_list)
 
-                image_np = ft.add_dim(image_np, 0)
-                self.batch_list.append(image_np)
+    def _get_next_mul(self):
+        """
+        在输入数据只有多个时，获取一个 mini batch
+        :return: 形似(x,y)的元组
+        """
+        self._get_mini_batch()
 
-            return ft.array_merge(self.batch_list, axis=0)
+        data = ft.data_zip(tuple(self.batch_list))
+        data = map(lambda x: np.array(x), data)  # 修改为numpy数组
+
+        return tuple(data)
+
+    def _get_next_dict(self):
+        """
+        在输入数据只有x时，获取一个 mini batch
+        :return: numpy数组
+        """
+        self._get_mini_batch()
+
+        data = ft.merge_key(self.batch_list)
+        print("data is :", data)
+        for key in data.keys():
+            data[key] = np.array(data[key])  # 修改为numpy数组
+
+        return data
 
     def make_iterator(self):
         """
@@ -130,9 +184,16 @@ class Dataset(object):
         """
         if self.epochs == self.counter:
             raise StopIteration("Data has been iteratively completed")
+
+        if self.data_type == "dict":
+            while 1:
+                yield self._get_next_dict()
+        elif self.data_num == 1:
+            while 1:
+                yield self._get_next_x()
         else:
             while 1:
-                yield self.get_next()
+                yield self._get_next_mul()
 
 
 class DataIter(object):

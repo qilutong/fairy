@@ -20,6 +20,8 @@ def array_merge(array_list, axis):
     :param axis: 要合并的轴
     :return: Numpy 数组
     """
+    # print(array_list[0].shape)
+    # print(array_list[1].shape)
     return np.concatenate(tuple(array_list), axis=axis)
 
 

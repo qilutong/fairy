@@ -45,3 +45,6 @@ def read_file_list(path, suffix):
         # 将目录下符合条件的文件名存入列表中
         file_list.extend(glob.glob("{}*.{}".format(path, suffix)))
     return file_list
+
+
+

@@ -7,12 +7,14 @@ from . import ft_array
 from .ft_array import *
 from . import ft_data
 from .ft_data import *
+from . import ft_dict
+from .ft_dict import *
 from . import ft_list
 from .ft_list import *
 from . import ft_ops
 from .ft_ops import *
 
-__all__ = ["ft_array", "ft_data", "ft_list", "ft_ops"]
+__all__ = ["ft_array", "ft_data", "ft_dict", "ft_list", "ft_ops"]
 
 print("👆👆👆👆👆👆👆👆👆👆👆👆👆")
 

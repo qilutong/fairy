@@ -20,7 +20,7 @@ def data_zip(data):
     :return: 列表或数组
     """
     if isinstance(data, tuple):
-        return [d for d in zip(*data)]
+        return [list(d) for d in zip(*data)]
     if isinstance(data, dict):
         data_list = []
         keys = data.keys()

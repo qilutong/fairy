@@ -5,6 +5,7 @@ import fairy.tail as ft
 from .data_base import open_image
 from ..classes import dataset
 
+
 def load_image(image_name, mode=None, size=None):
     """读取图片并返回numpy数组"""
     # 判断读取模式RGB 或 GRAY
