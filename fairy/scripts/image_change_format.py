@@ -24,17 +24,22 @@ parser = argparse.ArgumentParser(description="批量修改图片格式")
 parser.add_argument("path", help="原始文件目录")
 parser.add_argument("new_format", help="目标格式")
 
-parser.add_argument(
-    "--format",
-    "-F",
-    default="png,jpg,jpeg,svg,bmp",
-    help="要图像原始格式，用,隔开：jep,png,bmp")
-parser.add_argument(
-    "--mode", "-M", choices=["RGB", "GRAY"], default=None, help="图像模式")
+parser.add_argument("--format",
+                    "-F",
+                    default="png,jpg,jpeg,svg,bmp",
+                    help="要图像原始格式，用,隔开：jep,png,bmp")
+parser.add_argument("--mode",
+                    "-M",
+                    choices=["RGB", "GRAY"],
+                    default=None,
+                    help="图像模式")
 parser.add_argument("--size", "-S", default=None, help="size")
 parser.add_argument("--new_path", "-N", default=None, help="保存到新路径")
-parser.add_argument(
-    "--version", "-V", action="version", version="%(prog)s 1.0", help="版本号")
+parser.add_argument("--version",
+                    "-V",
+                    action="version",
+                    version="%(prog)s 1.0",
+                    help="版本号")
 
 
 def main(main_args):

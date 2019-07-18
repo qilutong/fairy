@@ -54,6 +54,6 @@ if __name__ == '__main__':
         "model_folder", type=str,
         help="input ckpt model dir")  # 命令行解析，help是提示符，type是输入的类型，
     # 这里运行程序时需要带上模型ckpt的路径，不然会报 error: too few arguments
-    aggs = parser.parse_args()
-    freeze_graph(aggs.model_folder)
+    args = parser.parse_args()
+    freeze_graph(args.model_folder)
     # freeze_graph("model/ckpt") #模型目录

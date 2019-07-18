@@ -10,10 +10,29 @@
 from __future__ import absolute_import, division, print_function
 
 import tensorflow as tf
+import tensorflow.keras.backend as K
 
-import tensorflow.keras.backend.tensorflow_backend as KTF
 
-config = tf.ConfigProto()
-config.gpu_options.allow_growth = True
-session = tf.Session(config=config)
-KTF.set_session(session)
+def init_config():
+    """
+    初始化Session
+    :return:
+    """
+    config = tf.ConfigProto()
+
+    config.gpu_options.allow_growth = True
+
+    session = tf.Session(config=config)
+
+    K.set_session(session)
+
+
+def clear():
+    """
+    销毁当前的 TF 图并创建一个新图
+    :return:
+    """
+    K.clear_session()
+
+
+tf.get_default_session()

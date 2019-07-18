@@ -31,4 +31,4 @@ def load_graph(model_file):
 import numpy as np
 
 np.random.randn()
-tf.gfile.GFile(model_dir, "rb")
+tf.gfile.GFile(model, "rb")

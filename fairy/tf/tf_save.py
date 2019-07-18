@@ -9,13 +9,17 @@
 """
 from __future__ import absolute_import, division, print_function
 
-import os
 import tensorflow as tf
 from tensorflow.python.framework import graph_util
 
 
 def save_ckpt(sess, model_name):
-    """模型保存为ckpt格式"""
+    """
+    模型保存为ckpt格式
+    :param sess: 要保存的计算图会话
+    :param model_name: 模型名
+    :return:
+    """
     saver = tf.train.Saver()  # 声明saver用于保存模型
     saver.save(sess, model_name)  # 模型保存
 

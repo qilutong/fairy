@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 @FileName    : h5_to_pb.py
-@Description : None
+@Description : h5模型转换为pb格式
 @Author      : 齐鲁桐
 @Email       : qilutong@yahoo.com
 @Time        : 2019-04-01 13:31
@@ -12,8 +12,7 @@ from __future__ import absolute_import, division, print_function
 import os
 
 import tensorflow as tf
-from keras import backend as K
-from keras.models import load_model
+import tensorflow.keras.backend as K
 
 # 路径参数
 input_path = 'input path'
@@ -50,7 +49,7 @@ def h5_to_pb(h5_model,
 # 输出路径
 output_dir = os.path.join(os.getcwd(), "trans_model")
 # 加载模型
-h5_model = load_model(weight_file_path)
+h5_model = tf.keras.models.load_model(weight_file_path)
 h5_to_pb(h5_model, output_dir=output_dir, model_name=output_graph_name)
 print('model saved')
 

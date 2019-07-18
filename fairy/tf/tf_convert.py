@@ -20,8 +20,8 @@ def freeze_graph(model_folder, output_graph):
 
     output_node_names = "predictions"  # 原模型输出操作节点的名字
     # 得到图、clear_devices ：是否在导入期间清除“Operation”或“Tensor”的设备字段。
-    saver = tf.train.import_meta_graph(
-        input_checkpoint + '.meta', clear_devices=True)
+    saver = tf.train.import_meta_graph(input_checkpoint + '.meta',
+                                       clear_devices=True)
 
     graph = tf.get_default_graph()  # 获得默认的图
     input_graph_def = graph.as_graph_def()  # 返回一个序列化的图代表当前的图
@@ -40,8 +40,8 @@ def freeze_graph(model_folder, output_graph):
         )
         with tf.gfile.GFile(output_graph, "wb") as f:  # 保存模型
             f.write(output_graph_def.SerializeToString())  # 序列化输出
-        print("%d ops in the final graph." % len(
-            output_graph_def.node))  # 得到当前图有几个操作节点
+        print("%d ops in the final graph." %
+              len(output_graph_def.node))  # 得到当前图有几个操作节点
 
         for op in graph.get_operations():
             print(op.name, op.values())
