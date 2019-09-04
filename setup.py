@@ -11,13 +11,16 @@ parser.add_argument("--tensorflow", "-tf", default=True, help="安装")
 
 m_args = parser.parse_args()
 
-packagges = []
+packagges = [
+    'fairy', 'fairy.pt', 'fairy.tf', 'fairy.tf2', 'fairy.data', 'fairy.tail',
+    'fairy.models', 'fairy.classes', 'fairy.scripts'
+]
 
 setup(name='fairy',
       version='1.0.0',
       packages=[
-          'fairy', 'fairy.pt', 'fairy.tf', 'fairy.tf2', 'fairy.data',
-          'fairy.tail', 'fairy.models', 'fairy.classes', 'fairy.scripts'
+          'fairy', 'fairy.tf', 'fairy.data', 'fairy.tail', 'fairy.models',
+          'fairy.classes', 'fairy.scripts'
       ],
       url='https://github.com/qilutong/fairy',
       license='MIT',
