@@ -14,8 +14,17 @@ import torch
 # 检测是否支持GPU
 gpu = torch.cuda.is_available()
 
+
+def get_device():
+    """
+    获取可用设备
+    :return: 字符串 ‘CPU’ 或 ‘GPU’
+    """
+    return torch.device('cuda:0' if gpu else 'cpu')
+
+
 # 设备
-device = torch.device('cuda' if gpu else 'cpu')
+device = get_device()
 
 
 def info():
@@ -35,5 +44,12 @@ def set_seed(seed):
         torch.cuda.manual_seed(seed)  # 为当前GPU设置随机种子
         torch.cuda.manual_seed_all(seed)  # 为所有GPU设置随机种子
 
+
+def clear_gpu():
+    """
+    清除GPU缓存
+    :return:
+    """
+    torch.cuda.empty_cache()
 
 

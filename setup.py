@@ -1,5 +1,17 @@
 from setuptools import setup
 
+import argparse
+
+parser = argparse.ArgumentParser(description="安装工具包")
+
+parser.add_argument("tool", help="需要安装的工具")
+parser.add_argument("new_format", help="目标格式")
+
+parser.add_argument("--tensorflow", "-tf", default=True, help="安装")
+
+m_args = parser.parse_args()
+
+packagges = []
 
 setup(name='fairy',
       version='1.0.0',

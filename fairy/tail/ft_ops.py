@@ -21,7 +21,7 @@ def get_cwd():
     return check_sep(os.path.dirname(fairy_dir))
 
 
-def read_file_list(path, suffix):
+def read_file_list(path, suffix="*"):
     """
     从给定路径中读取符合后缀的文件名，并将路径存入列表
     :param path:
